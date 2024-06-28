@@ -1,6 +1,6 @@
 import sys
 
-
+supported_commands = ["exit", "echo", "type"]
 def main():
     while True:
         sys.stdout.write("$ ")
@@ -28,6 +28,15 @@ def main():
             sys.exit(code)
         elif (command == "echo"):
             print(" ".join(args))
+        elif (command == "type"):
+            if len(args) == 0:
+                print("type: too few arguments")
+            elif len(args) > 1:
+                print("type: too many arguments")
+            elif args[0] in supported_commands:
+                print(f"{args[0]} is a shell builtin")
+            else:
+                print(f"{args[0]}: not found")
         else:
             print(f"{command}: command not found")
 
