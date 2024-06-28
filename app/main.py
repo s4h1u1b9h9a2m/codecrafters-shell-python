@@ -10,13 +10,24 @@ def main():
         exp = input()
 
         if exp.strip() == "":
-            return
+            sys.exit(0)
 
         exp_arr = exp.split()
 
         command = exp_arr[0]
-        
-        print(f"{command}: command not found")
+        args = exp_arr[1:]
+
+        if (command == "exit"):
+            code = 0
+            if len(args) > 1:
+                print("exit: too many arguments")
+            elif len(args) == 1 and not args[0].isnumeric():
+                print("exit: argument must be a number")
+            elif len(args) == 1:
+                code = int(args[0])
+            sys.exit(code)
+        else:
+            print(f"{command}: command not found")
 
 
 if __name__ == "__main__":
