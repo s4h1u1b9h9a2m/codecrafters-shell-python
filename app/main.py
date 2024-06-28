@@ -3,10 +3,13 @@ import os
 
 supported_commands = ["exit", "echo", "type"]
 
-def command_lookup_in_path(command, path):
-    for root, dirs, files in os.walk(path):
-        if command in files:
-            return os.path.join(root, command)
+def command_lookup_in_path(command):
+    if os.environ["PATH"]:
+        paths = os.environ["PATH"].split(":")
+        for path in paths:
+            if os.path.isfile(os.path.join(path, command)):
+                return os.path.join(path, command)
+    return False
 
 def type_command(args):
     if len(args) == 0:
@@ -16,17 +19,11 @@ def type_command(args):
     elif args[0] in supported_commands:
         print(f"{args[0]} is a shell builtin")
     elif os.environ["PATH"]:
-        paths = os.environ["PATH"].split(":")
-        location = False
-        for path in paths:
-            location = command_lookup_in_path(args[0], path)
-            if location:
-                print(f"{args[0]} is {location}")
-                break
-        
-        if not location:
+        location = command_lookup_in_path(args[0])
+        if location:
+            print(f"{args[0]} is {location}")
+        else:
             print(f"{args[0]}: not found")
-            
     else:
         print(f"{args[0]}: not found")
 
@@ -63,7 +60,11 @@ def main():
         elif (command == "type"):
             type_command(args)
         else:
-            print(f"{command}: command not found")
+            location = command_lookup_in_path(command)
+            if location:
+                os.system(f"{location} {' '.join(args)}")
+            else:
+                print(f"{command}: command not found")
 
 
 if __name__ == "__main__":
