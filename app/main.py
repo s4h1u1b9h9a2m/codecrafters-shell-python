@@ -26,6 +26,8 @@ def main():
             elif len(args) == 1:
                 code = int(args[0])
             sys.exit(code)
+        elif (command == "echo"):
+            print(" ".join(args))
         else:
             print(f"{command}: command not found")
 
