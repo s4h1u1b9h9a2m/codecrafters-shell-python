@@ -1,7 +1,7 @@
 import sys
 import os
 
-supported_commands = ["exit", "echo", "type"]
+supported_commands = ["exit", "echo", "type", "pwd"]
 
 def command_lookup_in_path(command):
     if os.environ["PATH"]:
@@ -40,7 +40,7 @@ def exit_command(args):
 def exec_command(command, args):
     os.system(f"{command} {' '.join(args)}")
 
-def pwd_command(args):
+def pwd_command():
     print(os.getcwd())
 
 def main():
@@ -66,7 +66,7 @@ def main():
         elif (command == "type"):
             type_command(args)
         elif (command == "pwd"):
-            pwd_command(args)
+            pwd_command()
         else:
             location = command_lookup_in_path(command)
             if location:
