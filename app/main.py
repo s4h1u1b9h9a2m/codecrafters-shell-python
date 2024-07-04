@@ -74,7 +74,10 @@ def main():
             path = args[0]
             if (path == "~"):
                 path = os.path.expanduser("~")
-            cd_command(path)
+            try:
+                cd_command(path)
+            except FileNotFoundError:
+                print(f"cd: {path}: No such file or directory")
         else:
             location = command_lookup_in_path(command)
             if location:
