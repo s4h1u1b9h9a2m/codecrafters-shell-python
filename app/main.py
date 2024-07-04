@@ -37,6 +37,12 @@ def exit_command(args):
         code = int(args[0])
     sys.exit(code)
 
+def exec_command(command, args):
+    os.system(f"{command} {' '.join(args)}")
+
+def pwd_command(args):
+    print(os.getcwd())
+
 def main():
     while True:
         sys.stdout.write("$ ")
@@ -59,10 +65,12 @@ def main():
             print(" ".join(args))
         elif (command == "type"):
             type_command(args)
+        elif (command == "pwd"):
+            pwd_command(args)
         else:
             location = command_lookup_in_path(command)
             if location:
-                os.system(f"{location} {' '.join(args)}")
+                exec_command(location, args)
             else:
                 print(f"{command}: command not found")
 
