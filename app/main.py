@@ -1,7 +1,7 @@
 import sys
 import os
 
-supported_commands = ["exit", "echo", "type", "pwd"]
+supported_commands = ["exit", "echo", "type", "pwd", "cd"]
 
 def command_lookup_in_path(command):
     if os.environ["PATH"]:
@@ -43,6 +43,9 @@ def exec_command(command, args):
 def pwd_command():
     print(os.getcwd())
 
+def cd_command(path):
+    return os.chdir(path)
+
 def main():
     while True:
         sys.stdout.write("$ ")
@@ -67,6 +70,11 @@ def main():
             type_command(args)
         elif (command == "pwd"):
             pwd_command()
+        elif (command == "cd"):
+            path = args[0]
+            if (path == "~"):
+                path = os.path.expanduser("~")
+            cd_command(path)
         else:
             location = command_lookup_in_path(command)
             if location:
